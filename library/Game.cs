@@ -13,6 +13,7 @@ namespace Chess
     {
 
         public enum EndGames {Check, Checkmate, Stalemate, Draw} //types of endgame
+        public static Point negPoint = new Point(-1, -1);
 
 
         #region Settings
@@ -93,13 +94,18 @@ namespace Chess
 
 
 
-
-        public static string convertLoc(Point point)
+        //convert notations
+        public static Point convertLoc(char col, char row)
         {
-            string collum = ((char)((int)'A' + point.X)).ToString();
-            string row = ((char)((int)'1' + point.Y)).ToString();
-            return collum + row;
-        }  //convert point to chess row/col notation
+            Point num_loc = new Point((int)col - (int)'A', (int)row - (int)'1');
+            if (inBounds(num_loc)) { return num_loc; } else { return negPoint; }
+
+        }
+        public static char[] convertLoc(Point loc)
+        {
+            if (!inBounds(loc)) { return null; }
+            return new char[] { (char)((int)'A' + loc.X), (char)((int)'1' + loc.Y) };
+        }  
 
         public ChessGame(int MOVECAP_INIT, bool PAWNTRANSFORM_INIT)
         {
